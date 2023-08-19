@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Action;
 import 'package:flutter_redurx/flutter_redurx.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -9,7 +9,7 @@ class State {
 
 class Increment extends Action<State> {
   @override
-  State reduce(State state) => State(state.count + 1);
+  State reduce(State? state) => State(state!.count + 1);
 }
 
 class Counter extends StatelessWidget {
@@ -19,12 +19,13 @@ class Counter extends StatelessWidget {
       home: Row(
         children: <Widget>[
           Connect<State, int>(
-            convert: (state) => state.count,
+            convert: (state) => state?.count,
             where: (prev, next) => next != prev,
             builder: (counter) => Text(counter.toString()),
           ),
-          RaisedButton(
+          ElevatedButton(
             onPressed: () => Provider.dispatch<State>(context, Increment()),
+            child: Text('Inc'),
           ),
         ],
       ),
@@ -46,7 +47,7 @@ void main() async {
     final store = Store(State(0));
 
     final fixture = Connect<State, int>(
-      convert: (state) => state.count,
+      convert: (state) => state?.count,
       where: (prev, next) => next != prev,
       builder: (count) => Text(count.toString()),
     );
@@ -60,14 +61,14 @@ void main() async {
     final store = Store(State(0));
 
     final fixture = Connect<State, int>(
-      convert: (state) => state.count,
+      convert: (state) => state?.count,
       where: (prev, next) => next != prev,
       builder: (count) =>
           Text(count.toString(), textDirection: TextDirection.ltr),
     );
 
     await tester.pumpWidget(Provider(store: store, child: fixture));
-    await tester.pump(Duration.zero);
+    await tester.pumpAndSettle();
 
     expect(find.text('0'), findsOneWidget);
   });
@@ -76,7 +77,7 @@ void main() async {
     final store = Store(State(0));
 
     final fixture = Connect<State, int>(
-      convert: (state) => state.count,
+      convert: (state) => state?.count,
       where: (prev, next) => next != prev,
       builder: (count) =>
           Text(count.toString(), textDirection: TextDirection.ltr),
@@ -102,7 +103,7 @@ void main() async {
 
     expect(find.text('0'), findsOneWidget);
 
-    await tester.tap(find.byType(RaisedButton));
+    await tester.tap(find.byType(ElevatedButton));
     await tester.pump(Duration.zero);
 
     expect(find.text('1'), findsOneWidget);
@@ -113,7 +114,7 @@ void main() async {
     final store = Store(State(0));
 
     final fixture = Connect<State, int>(
-      convert: (state) => state.count,
+      convert: (state) => state?.count,
       where: (prev, next) => next != prev,
       builder: (count) => Text(count == null ? 'null' : count.toString(),
           textDirection: TextDirection.ltr),

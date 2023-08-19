@@ -4,16 +4,18 @@ import 'package:flutter_redurx/flutter_redurx.dart';
 import 'app_state.dart';
 
 class Example1 extends StatelessWidget {
+  const Example1({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Connect<AppState, String>(
-            convert: (state) => state.title,
+          title: Connect<AppState, String?>(
+            convert: (state) => state?.title,
             where: (prev, next) => next != prev,
             builder: (title) {
-              print('Building title: $title');
-              return Text(title);
+              debugPrint('Building title: $title');
+              return Text(title!);
             },
           ),
         ),
@@ -21,14 +23,14 @@ class Example1 extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text('You have pushed the button this many times:'),
+              const Text('You have pushed the button this many times:'),
               Connect<AppState, String>(
-                convert: (state) => state.count.toString(),
+                convert: (state) => (state?.count ?? 0).toString(),
                 where: (prev, next) => next != prev,
                 builder: (count) {
-                  print('Building counter: $count');
-                  return Text(count,
-                      style: Theme.of(context).textTheme.display1);
+                  debugPrint('Building counter: $count');
+                  return Text(count!,
+                      style: Theme.of(context).textTheme.displaySmall);
                 },
               ),
             ],
@@ -37,7 +39,7 @@ class Example1 extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
           onPressed: () => Provider.dispatch<AppState>(context, Increment()),
           tooltip: 'Increment',
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
         ));
   }
 }

@@ -1,17 +1,19 @@
 name: flutter_redurx
 version: 1.1.1
-description: Flutter bindings for ReduRx (A thin layer of a Redux-based state manager on top of RxDart).
-author: leocavalcante <lc@leocavalcante.com>
-homepage: https://github.com/leocavalcante/ReduRx
+publish_to: none
 
 environment:
-  sdk: ">=2.0.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
-  redurx: ^1.1.1
+  redurx:
+    git:
+      url: git@github.com:wrbl606/ReduRx.git
+      ref: "d817cf3afeae4d6fb4b2fc0deac03fa861b6860c"
   flutter:
     sdk: flutter
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  
