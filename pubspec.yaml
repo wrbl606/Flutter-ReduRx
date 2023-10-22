@@ -8,7 +8,7 @@ environment:
 dependencies:
   redurx:
     git:
-      url: git@github.com:wrbl606/ReduRx.git
+      url: https://github.com/wrbl606/ReduRx.git
       ref: "d817cf3afeae4d6fb4b2fc0deac03fa861b6860c"
   flutter:
     sdk: flutter
